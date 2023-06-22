@@ -69,3 +69,5 @@ while Life == True:
 
     pygame.display.flip()
     Clock.tick(FPS)
+
+# TEST
