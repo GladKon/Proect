@@ -4,7 +4,7 @@ import pygame
 
 from settings import *
 from Player import Player
-
+from ray_cating import ray_casting
 from Cartoon import *
 
 
@@ -36,7 +36,7 @@ def check_intersection(square, circle):
 
 
 pygame.init()
-win = pygame.display.set_mode((win_x,win_y))
+win = pygame.display.set_mode((win_x, win_y))
 Clock = pygame.time.Clock()
 player = Player()
 
@@ -49,23 +49,23 @@ while Life == True:
 
     win.fill(BG_color)
 
-    pygame.draw.circle(win,Person_color,player.get_pos(),12)
-    pygame.draw.line(win, Person_color,player.get_pos() ,(player.x + win_x * math.cos(player.angl), player.y + win_y * math.sin(player.angl)))
+    pygame.draw.circle(win, Person_color, player.get_pos(), 12)
+    pygame.draw.line(win, Person_color, player.get_pos(),
+                     (player.x + win_x * math.cos(player.angl), player.y + win_y * math.sin(player.angl)))
+
+    ray_casting(win, player.get_pos(), player.angl)
 
     flag = True
 
     X, Y = player.get_pos()
 
-    for x, y in coor_s:
-        pygame.draw.rect(win,(150,5,0),(y,x,s_x,s_y),2)
-        if flag == True:
-            flag = check_intersection((x,y,x + s_x,y + s_y),(X,Y,4))
+    # for y, x in coor_s:
+    #     # pygame.draw.rect(win, (150, 5, 0), (y, x, s_x, s_y), 2)
+    #     if flag == True:
+    #         flag = check_intersection((y, x,  y + s_y, x + s_x), (X, Y, 2))
 
     if flag == True:
         player.move()
-
-
-
 
     pygame.display.flip()
     Clock.tick(FPS)

@@ -6,7 +6,7 @@ import pygame
 
 class Player:
     def __init__(self):
-        self.x,self.y = start_pos
+        self.x, self.y = start_pos
         self.angl = start_angl
 
     def get_pos(self):
