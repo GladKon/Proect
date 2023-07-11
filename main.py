@@ -27,18 +27,18 @@ def check_intersection(square, circle):
     dist = math.sqrt((xs - xc) ** 2 + (ys - yc) ** 2)
 
     # Проверяем условия пересечения
-    if dist > r + max_dist:
-        return True
-    elif dist < r - min_dist:
-        return False
+    if dist < r - min_dist:
+        return player.get_pos()
     else:
-        return False
+        return player.get_pos()
 
 
 pygame.init()
 win = pygame.display.set_mode((win_x, win_y))
 Clock = pygame.time.Clock()
 player = Player()
+
+Cartoon(s_x, s_y, map_list,coor_s)
 
 Life = True
 
@@ -49,23 +49,43 @@ while Life == True:
 
     win.fill(BG_color)
 
-    pygame.draw.circle(win, Person_color, player.get_pos(), 12)
-    pygame.draw.line(win, Person_color, player.get_pos(),
-                     (player.x + win_x * math.cos(player.angl), player.y + win_y * math.sin(player.angl)))
-
     ray_casting(win, player.get_pos(), player.angl)
 
     flag = True
 
     X, Y = player.get_pos()
 
-    # for y, x in coor_s:
-    #     # pygame.draw.rect(win, (150, 5, 0), (y, x, s_x, s_y), 2)
-    #     if flag == True:
-    #         flag = check_intersection((y, x,  y + s_y, x + s_x), (X, Y, 2))
+    player.proverka(coor_s, win)
 
+
+
+
+
+
+
+    pygame.draw.circle(win, Person_color, player.get_pos(), 5)
     if flag == True:
         player.move()
+
+
+    sin_a = math.sin(player.angl)
+    cos_a = math.cos(player.angl)
+    x1 , y1 = player.get_pos()
+    for d in range(1, Max_rause):
+        x2 = x1 + d * cos_a
+        y2 = y1 + d * sin_a
+
+        if (x2 // s_x * s_x, y2 // s_y * s_y) in coor_s:
+            pygame.draw.line(win, Person_color,(x1, y1), (x2, y2), 1)
+            break
+    keys = pygame.key.get_pressed()
+
+    if keys[pygame.K_SPACE]:
+        for i in coor_s:
+            x, y = i
+            if x < x2 < x + s_x and y < y2 < y + s_y:
+                coor_s.remove(i)
+                break
 
     pygame.display.flip()
     Clock.tick(FPS)
