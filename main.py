@@ -6,39 +6,28 @@ from settings import *
 from Player import Player
 from ray_cating import ray_casting
 from Cartoon import *
+from ferst import *
+import socket
+import pickle
+import sys
 
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server = "127.0.0.1"
+port = 5555
+address = (server, port)
 
-def check_intersection(square, circle):
-    x1, y1, x2, y2 = square
-    xc, yc, r = circle
-
-    # Вычисляем координаты центра квадрата
-    xs, ys = (x1 + x2) / 2, (y1 + y2) / 2
-
-    # Вычисляем длину диагонали и стороны квадрата
-    diagonal = math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
-    side = diagonal / math.sqrt(2)
-
-    # Вычисляем максимальное и минимальное расстояние от центра квадрата до его границы
-    max_dist = diagonal / 2
-    min_dist = side / 2
-
-    # Вычисляем расстояние от центра квадрата до центра круга
-    dist = math.sqrt((xs - xc) ** 2 + (ys - yc) ** 2)
-
-    # Проверяем условия пересечения
-    if dist < r - min_dist:
-        return player.get_pos()
-    else:
-        return player.get_pos()
-
+try:
+    client.connect(address)
+except socket.error as e:
+    print("Failed to connect to the server:", e)
+    sys.exit(1)
 
 pygame.init()
 win = pygame.display.set_mode((win_x, win_y))
 Clock = pygame.time.Clock()
 player = Player()
 
-Cartoon(s_x, s_y, map_list,coor_s)
+Cartoon(s_x, s_y, map_list, coor_s)
 
 Life = True
 
@@ -46,9 +35,20 @@ while Life == True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             Life = False
-
+    try:
+        data = client.recv(2048)
+        if data:
+            p2Pos = pickle.loads(data)
+            player.x = p2Pos["x"]
+            player.y = p2Pos["y"]
+        else:
+            print("No data received from the server.")
+            break
+    except EOFError:
+        print("Failed to receive data from the server.")
+        break
     win.fill(BG_color)
-
+    print(player.get_pos())
     ray_casting(win, player.get_pos(), player.angl)
 
     flag = True
@@ -58,14 +58,10 @@ while Life == True:
     player.proverka(coor_s, win)
 
 
-
-
-
-
-
     pygame.draw.circle(win, Person_color, player.get_pos(), 5)
     if flag == True:
         player.move()
+
 
 
     sin_a = math.sin(player.angl)
@@ -78,16 +74,10 @@ while Life == True:
         if (x2 // s_x * s_x, y2 // s_y * s_y) in coor_s:
             pygame.draw.line(win, Person_color,(x1, y1), (x2, y2), 1)
             break
-    keys = pygame.key.get_pressed()
-
-    if keys[pygame.K_SPACE]:
-        for i in coor_s:
-            x, y = i
-            if x < x2 < x + s_x and y < y2 < y + s_y:
-                coor_s.remove(i)
-                break
-
+    print(player.get_pos())
+    # Bullet(win, player.angle())
+    client.send(pickle.dumps({"x": player.x, "y": player.y}))
     pygame.display.flip()
     Clock.tick(FPS)
 
-# TEST
+

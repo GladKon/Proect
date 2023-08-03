@@ -9,7 +9,7 @@ start_pos = win_x//10 - 15, win_y//10
 start_angl = 0
 start_speed = 1
 Person_color = 10,10,110
-
+Bullet_speed = 0.01
 
 player_move = {'Up': True, 'Dawn': True, 'Right': True, 'Left': True}
 

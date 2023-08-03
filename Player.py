@@ -14,6 +14,12 @@ class Player:
     def get_pos(self):
         return self.x, self.y
 
+
+    def angle(self):
+        sin_a = math.sin(self.angl)
+        cos_a = math.cos(self.angl)
+        return sin_a, cos_a
+
     def move(self):
 
         sin_a = math.sin(self.angl)
