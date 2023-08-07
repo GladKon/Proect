@@ -15,7 +15,7 @@ except socket.error as e:
 s.listen(2)
 print("Server Started. Waiting for a connection.")
 
-players = [{"x": 15, "y": 15}, {"x": 25, "y": 25}]
+players = [{"x": 25, "y": 40}, {"x": 25, "y": 25}]
 
 
 def threaded_client(conn, player):
@@ -24,7 +24,7 @@ def threaded_client(conn, player):
     while True:
         try:
             data = pickle.loads(conn.recv(2048))
-            print(data)
+
             players[player] = data
 
             if not data:
@@ -35,7 +35,7 @@ def threaded_client(conn, player):
                     reply = players[0]
                 else:
                     reply = players[1]
-                print(reply)
+
                 conn.sendall(pickle.dumps(reply))
         except:
             break

@@ -50,7 +50,7 @@ while Life == True:
     win.fill(BG_color)
     oponent_pos_x, oponent_pos_y = oponent.get_pos()
     oponent_pos = int(oponent_pos_x), int(oponent_pos_y)
-    ray_casting(win, player.get_pos(), player.angl,oponent_pos)
+    ray_casting(win, player.get_pos(), player.angl, oponent_pos)
 
     flag = True
 
@@ -76,7 +76,7 @@ while Life == True:
         if (x2 // s_x * s_x, y2 // s_y * s_y) in coor_s:
             pygame.draw.line(win, Person_color,(x1, y1), (x2, y2), 1)
             break
-    print(oponent.get_pos())
+
 
 
     # Bullet(win, player.angle())

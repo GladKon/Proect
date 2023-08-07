@@ -4,7 +4,7 @@ import math
 from settings import *
 from Cartoon import *
 
-def ray_casting(screen, player_pos, player_angle):
+def ray_casting(screen, player_pos, player_angle,oponent_pos):
     x1, y1 = player_pos
     start_angle = player_angle - Half_Fov
     for i in range(Num_raus):
@@ -19,4 +19,8 @@ def ray_casting(screen, player_pos, player_angle):
                 pygame.draw.rect(screen,(255, 255, 255), (i * HSKALA, win_y // 2 - visota // 2, HSKALA, visota))
                 break
 
+            if (x2 // s_x * s_x, y2 // s_y * s_y) == oponent_pos:
+                visota = coef / d
+                pygame.draw.rect(screen, (255, 0, 0), (i * HSKALA, win_y // 2 - visota // 2, HSKALA, visota))
+                break
         start_angle += Delta_Angle
