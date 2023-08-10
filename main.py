@@ -12,7 +12,7 @@ import pickle
 import sys
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server = "127.0.0.1"
+server = "51.250.18.215"
 port = 5555
 address = (server, port)
 
@@ -76,7 +76,7 @@ while Life == True:
         if (x2 // s_x * s_x, y2 // s_y * s_y) in coor_s:
             pygame.draw.line(win, Person_color,(x1, y1), (x2, y2), 1)
             break
-    print(oponent.get_pos())
+
 
 
     # Bullet(win, player.angle())

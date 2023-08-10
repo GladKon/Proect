@@ -19,7 +19,7 @@ players = [{"x": 25, "y": 40}, {"x": 25, "y": 25}]
 
 
 def threaded_client(conn, player):
-    global players
+    global players,currentPlayer
     conn.send(pickle.dumps(players[player]))
     while True:
         try:
@@ -42,7 +42,7 @@ def threaded_client(conn, player):
 
     print("Connection lost")
     conn.close()
-
+    currentPlayer -= 1
 
 currentPlayer = 0
 while True:
